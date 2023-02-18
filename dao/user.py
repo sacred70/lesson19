@@ -28,3 +28,9 @@ class UserDAO:
 
         self.session.add(user)
         self.session.commit()
+
+    def delete(self, uid):
+        user = self.get_user_id(uid)
+        self.session.delete(uid)
+        self.session.commit()
+
