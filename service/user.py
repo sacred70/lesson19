@@ -38,3 +38,15 @@ class UserService:
             PWD_HASH_SALT,
             PWD_HASH_ITERATIONS
         ))
+
+
+    def compare_passwords(self,pass_hash, password):
+        """Принимает хешированный пароль и введенный пароль, создает хеш введенного пароля,
+            сравнивает их, возвращает True/False"""
+        new_hash = base64.b64encode(hashlib.pbkdf2_hmac(
+            'sha256',
+            password.encode('utf-8'),
+            PWD_HASH_SALT,
+            PWD_HASH_ITERATIONS
+        ))
+        return hmac.compare_digest(pass_hash, new_hash)
