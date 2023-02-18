@@ -14,5 +14,12 @@ class UserDAO:
         return self.session.query(User).get(uid)
 
 
+    def get_user_username(self, username):
+        return self.session.query(User).filter(User.username == username).first()
 
+    def create(self, user_d):
+        user = User(**user_d)
+        self.session.add(user)
+        self.session.commit()
+        return user
 
