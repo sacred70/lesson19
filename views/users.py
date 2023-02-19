@@ -25,11 +25,12 @@ class UserView(Resource):
         user_schema = UserSchema().dump(user)
         return user_schema, 200
 
-    def post(self, uid):
+    def put(self, uid):
         req_json = request.json
-        if 'id' not in req_json:
-            req_json['id'] = uid
+        if "id" not in req_json:
+            req_json["id"] = uid
         user_service.update(req_json)
+        return "", 204
 
     def delete(self, uid):
         user_service.delete(uid)

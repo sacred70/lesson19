@@ -1,4 +1,4 @@
-from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
+from dec_cons.constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
 import base64
 import hashlib
 import hmac
@@ -19,17 +19,17 @@ class UserService:
         return self.dao.get_all()
 
     def create(self, user_data):
-        user_data['password'] = self.get_hash(user_data['password'])
+        user_data['password'] = self.get_hash(user_data.get('password'))
         return self.dao.create(user_data)
 
     def update(self, user_data):
-        user_data['password'] = self.get_hash(user_data['password'])
+        user_data['password'] = self.get_hash(user_data.get('password'))
         return self.dao.update(user_data)
 
     def delete(self, uid):
         return self.dao.delete(uid)
 
-    def get_hach(self, password):
+    def get_hash(self, password):
         """Принимает пароль, отдает хэш"""
         return base64.b64encode(hashlib.pbkdf2_hmac(
             'sha256',
@@ -41,10 +41,5 @@ class UserService:
     def compare_passwords(self,pass_hash, password):
         """Принимает хешированный пароль и введенный пароль, создает хеш введенного пароля,
             сравнивает их, возвращает True/False"""
-        new_hash = base64.b64encode(hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),
-            PWD_HASH_SALT,
-            PWD_HASH_ITERATIONS
-        ))
-        return hmac.compare_digest(pass_hash, new_hash)
+
+        return hmac.compare_digest(pass_hash, self.get_hash(password))
