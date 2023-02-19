@@ -10,7 +10,7 @@ class AuthService:
     def __init__(self, user_service: UserService):
         self.user_service = user_service
 
-    def generate_token(self, username, password, is_refresh = False):
+    def generate_token(self, username, password, is_refresh=False):
         user = self.user_service.get_username(username)
 
         if user is None:
